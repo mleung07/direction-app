@@ -14,7 +14,7 @@ class RouteController extends Controller
     public function create(Request $request) {
         $input = $request->all();
 
-        // validations
+        // validate if the input is an array
         if(!is_array($input) || count($input) == 0) {
             return response(
                 [ 'error' => 'INPUT_NON_ARRAY' ]
@@ -67,7 +67,7 @@ class RouteController extends Controller
             ]);
         }
 
-        // Dispatch job to call google maps api
+        // Dispatch job to call google maps api asynchronously
         dispatch(new SendApiRequest($route));
         
         return response()->json([
