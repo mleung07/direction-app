@@ -37,10 +37,10 @@ services:
   image: mysql:5.7
   command: "--innodb_use_native_aio=0"
   environment:
+   MYSQL_HOST: localhost
    MYSQL_DATABASE: ${DB_DATABASE}
    MYSQL_USER: ${DB_USERNAME}
    MYSQL_PASSWORD: ${DB_PASSWORD}
-   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
   volumes:
    - ./mysql:/var/lib/mysql
   ports:
