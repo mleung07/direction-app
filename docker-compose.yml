@@ -1,0 +1,61 @@
+version: '2'
+services:
+ web:
+  build:
+   context: ./
+   dockerfile: web.dockerfile
+  container_name: web
+  ports:
+   - "8080:80"
+  volumes:
+   - ./:/var/www
+  links:
+   - app
+   - phpmyadmin
+ app:
+  build:
+   context: ./
+   dockerfile: app.dockerfile
+  volumes:
+   - ./:/var/www
+  depends_on:
+   - mysql
+  links:
+   - mysql
+  environment:
+   - "APP_ENV=${APP_ENV}"
+   - "APP_DEBUG=${APP_DEBUG}"
+   - "APP_KEY=${APP_KEY}"
+   - "DB_CONNECTION=${DB_CONNECTION}"
+   - "DB_HOST=${DB_HOST}"
+   - "DB_PORT=${DB_PORT}"
+   - "DB_DATABASE=${DB_DATABASE}"
+   - "DB_USERNAME=${DB_USERNAME}"
+   - "DB_PASSWORD=${DB_PASSWORD}"
+   - "CACHE_DRIVER=${CACHE_DRIVER}"
+   - "QUEUE_DRIVER=${QUEUE_DRIVER}"
+ mysql:
+  image: mysql:5.7
+  command: "--innodb_use_native_aio=0"
+  environment:
+   MYSQL_DATABASE: ${DB_DATABASE}
+   MYSQL_USER: ${DB_USERNAME}
+   MYSQL_PASSWORD: ${DB_PASSWORD}
+   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+  volumes:
+   - ./mysql:/var/lib/mysql
+  ports:
+   - "3306:3306"
+ phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  depends_on:
+   - mysql
+  links:
+   - mysql
+  ports:
+   - 9000:80
+  environment:
+   MYSQL_USER: ${DB_USERNAME}
+   MYSQL_PASSWORD: ${DB_PASSWORD}
+   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+   PMA_HOST: mysql
