@@ -26,6 +26,8 @@ docker-compose up -d
 
 You may need to wait for a few minute for building up the containers.
 
+After all the cotainers is up, please wait for around 2-3 minutes for mysql server to init the database for the first time.
+
 ## Enter the lumen container
 ```
 docker-compose exec app bash
