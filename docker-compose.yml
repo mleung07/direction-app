@@ -4,7 +4,6 @@ services:
   build:
    context: ./
    dockerfile: web.dockerfile
-  container_name: web
   ports:
    - "8080:80"
   volumes:
@@ -53,7 +52,7 @@ services:
   links:
    - mysql
   ports:
-   - 8008:80
+   - "8008:80"
   environment:
    MYSQL_USER: ${DB_USERNAME}
    MYSQL_PASSWORD: ${DB_PASSWORD}
