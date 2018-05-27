@@ -53,7 +53,7 @@ services:
   links:
    - mysql
   ports:
-   - 9000:80
+   - 8008:80
   environment:
    MYSQL_USER: ${DB_USERNAME}
    MYSQL_PASSWORD: ${DB_PASSWORD}
