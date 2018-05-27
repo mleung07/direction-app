@@ -1,8 +1,12 @@
-Direction Application
+# Direction Application
 
 ## Clone the repository
 ```
 git clone https://github.com/mleung07/direction-app.git
+```
+
+```
+cd direction-app
 ```
 
 ## Copy Environment Setting
@@ -10,7 +14,7 @@ git clone https://github.com/mleung07/direction-app.git
 cp .env.example .env
 ```
 
-## Installation Lumen and dependecies
+## Install Lumen and it's dependecies
 ```
 composer install
 ```
@@ -19,6 +23,8 @@ composer install
 ```
 docker-compose up -d
 ```
+
+You may need to wait for a few minute for building up the containers.
 
 ## Enter the lumen container
 ```

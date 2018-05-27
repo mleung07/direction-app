@@ -41,6 +41,7 @@ class SendApiRequest extends Job
 
         $url .= urldecode(http_build_query($query));
 
+        // add query when there is waypoint
         if ($waypoints->count() > 0) {
             $waypoint_str = '&waypoints=optimize:true';
             foreach ($waypoints as $waypoint) {
@@ -66,10 +67,11 @@ class SendApiRequest extends Job
         $http_result = $info ['http_code'];
         curl_close($ch);
 
-        // update model with response
+        // Update model with response
         $json = json_decode($output, true);
         $legs = $json['routes'][0]['legs'];
 
+        // Sum up distance and time for each legs
         $distance = 0;
         $time = 0;
         foreach($legs as $leg) {

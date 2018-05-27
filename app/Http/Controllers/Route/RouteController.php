@@ -21,12 +21,14 @@ class RouteController extends Controller
                 , 400);
         }
 
+        // validate if the input has at least 2 locations
         if(count($input) < 2) {
             return response(
                 [ 'error' => 'INSUFFICIENT_LENGTH' ]
                 , 400);
         }
 
+        // validate if the location is an array of 2 number
         foreach($input as $location) {
             if(count($location) > 2) {
                 return response(
@@ -77,37 +79,37 @@ class RouteController extends Controller
     public function get($token) {
         $route = Route::where('token', $token)->first();
 
+        // return fail when token not exist
         if (!$route) {
             return response(
                 [
                     'status' => 'failure',
                     'error'  => 'INVALID_TOKEN'
-                ]
-                , 400);
-        } else {
-            if ($route->status == Route::STATUS_PROGRESS) {
-                return response()->json([
-                        'status' => 'in progress'
-                    ]);
-            } elseif ($route->status == Route::STATUS_FAIL) {
-                return response(
-                    [
-                        'status' => 'failure',
-                        'error'  => 'INVALID_LOCATION'
-                    ]
-                    , 400);
-            } else {
-                $paths = $route->locations->map(function ($location) {
-                    return [$location->lat, $location->lng];
-                });
-                return response()->json([
-                    'status'         => 'success',
-                    'path'           => $paths,
-                    'total_distance' => $route->distance,
-                    'total_time'     => $route->time
-                ]);
-            }
+                ], 400);
         }
-
+        // return inprogress
+        if ($route->status == Route::STATUS_PROGRESS) {
+            return response()->json([
+                    'status' => 'in progress'
+                ]);
+        }
+        // return fail
+        if ($route->status == Route::STATUS_FAIL) {
+            return response(
+                [
+                    'status' => 'failure',
+                    'error'  => 'INVALID_LOCATION'
+                ], 400);
+        }
+        // return a formatted json if success
+        $paths = $route->locations->map(function ($location) {
+            return [$location->lat, $location->lng];
+        });
+        return response()->json([
+            'status'         => 'success',
+            'path'           => $paths,
+            'total_distance' => $route->distance,
+            'total_time'     => $route->time
+        ]);
     }
 }
